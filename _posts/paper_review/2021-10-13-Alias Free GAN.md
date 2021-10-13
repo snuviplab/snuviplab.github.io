@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: "Alias Free GAN (Technical Details)"
