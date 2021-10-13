@@ -8,6 +8,7 @@ tags: [Video, Action Recognition, Swin Transformer]
 image:
   feature:
 date: 2021-10-10T21:38:00-00:00
+comments : true
 ---
 
 **Ze Liu**∗12**, Jia Ning**∗13**, Yue Cao**1†**, Yixuan Wei**14**, Zheng Zhang**1**, Stephen Lin**1**, Han Hu**1†
