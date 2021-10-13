@@ -1,3 +1,18 @@
+---
+layout: post
+title: "Alias Free GAN (Technical Details)"
+modified:
+categories: paper_review
+excerpt:
+tags: [Video, Deepfake, GAN, Alias Free GAN]
+image:
+feature:
+date: 2021-10-13T16:44:00-00:00
+comments : true
+---
+*
+
+
 # Alias Free GAN (Technical Details)
 
 ### **[0] Motivation**
