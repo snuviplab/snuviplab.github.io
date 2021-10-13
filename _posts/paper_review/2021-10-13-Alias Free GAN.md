@@ -7,11 +7,10 @@ categories: paper_review
 excerpt:
 tags: [Video, Deepfake, GAN, Alias Free GAN]
 image:
-feature:
+ feature:
 date: 2021-10-13T16:44:00-00:00
 comments : true
 ---
-
 
 
 # Alias Free GAN (Technical Details)
