@@ -1,3 +1,15 @@
+---
+layout: post
+title: “U-Net" modified:
+categories: paper_review excerpt:
+tags: [Object Detection, Object Segmentation, Medical Data, U-Net] 
+image:
+feature:
+date: 2021-10-14T16:42:00-00:00 
+comments : true
+---
+
+
 # U-Net
 
 30 July 2021
