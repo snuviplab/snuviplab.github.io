@@ -1,10 +1,11 @@
 ---
 layout: post
-title: “U-Net" modified:
-categories: paper_review excerpt:
+title: “U-Net" 
+modified:
+categories: paper_review
 tags: [Object Detection, Object Segmentation, Medical Data, U-Net] 
 image:
-feature:
+  feature:
 date: 2021-10-14T16:42:00-00:00 
 comments : true
 ---
