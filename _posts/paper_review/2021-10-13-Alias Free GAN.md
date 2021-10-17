@@ -75,9 +75,9 @@ comments : true
     - **Q. Could we recover full original signal from sampled signal?**
     - **Nyquist Theorem**
         
-        ❗if, **$f_s \geq 2f_m$  →  Original signal could be fully recovered!**
+        if, **$f_s \geq 2f_m$  →  Original signal could be fully recovered!**
         
-            - ($f_s$ : Sampling ratio / $f_m$: Original signal frequency)
+        ($f_s$ : Sampling ratio / $f_m$: Original signal frequency)
         
         ![Untitled 4](https://user-images.githubusercontent.com/92419821/137087785-dadacd94-2723-49dc-b20a-caa2f4504d33.png)
         
@@ -99,11 +99,13 @@ comments : true
 - Impulse Response / Frequency Response
     - System
         
-        $O(f)=H(f)I(f) \leftrightarrow o(t)=h(t) \ast i(t)$
-         
-            $i(t)$ : Input Signal
-            $h(t)$ : System (= Transfer Function)
-            $o(t)$ : Output Signal
+        $O(f)=H(f)I(f) \leftrightarrow o(t)=h(t) \ast i(t)$  
+        
+        $i(t)$ : Input Signal
+        
+        $h(t)$ : System (= Transfer Function)
+        
+        $o(t)$ : Output Signal
         
     - Impulse Response / Frequency Response
         - Impulse Response
