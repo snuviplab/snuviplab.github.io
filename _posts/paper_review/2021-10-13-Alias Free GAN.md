@@ -55,10 +55,10 @@ comments : true
        *Representation becomes much more simpler!
     
     - Property
-        - **Sinc Function** (time) $\xleftrightarrow{FT}$ **LPF** (freq)
-        - **Convolution($\ast$)** $\xleftrightarrow{FT}$ **Multiplication($\cdot$)**
+        - **Sinc Function** (time) $\leftrightarrow{FT}$ **LPF** (freq)
+        - **Convolution($\ast$)** $\leftrightarrow{FT}$ **Multiplication($\cdot$)**
 - **Low Pass Filtering (LPF)**
-    - **Sinc Function** (time)  **$\xleftrightarrow{FT}$ LPF** (freq)
+    - **Sinc Function** (time)  **$\leftrightarrow{FT}$ LPF** (freq)
         
         ![Untitled 2](https://user-images.githubusercontent.com/92419821/137087782-0911ec3e-9e7d-49c8-a0d6-77e6a6c11d54.png)
         
@@ -72,9 +72,9 @@ comments : true
     - **Q. Could we recover full original signal from sampled signal?**
     - **Nyquist Theorem**
         
-        ❗if, $**f_s \geq 2f_m$  →  Original signal could be fully recovered!**
+        ❗if, **$f_s \geq 2f_m$  →  Original signal could be fully recovered!**
         
-           *$f_s$: Sampling ratio / $f_m$: Original signal frequency
+           * $f_s$ : Sampling ratio / $f_m$: Original signal frequency
         
         ![Untitled 4](https://user-images.githubusercontent.com/92419821/137087785-dadacd94-2723-49dc-b20a-caa2f4504d33.png)
         
@@ -99,9 +99,9 @@ comments : true
         
         $O(f)=H(f)I(f) \leftrightarrow o(t)=h(t) \ast i(t)$
         
-          * $i(t)$: Input Signal
-            $h(t)$: System (= Transfer Function)
-            $o(t)$: Output Signal
+          * $i(t)$ : Input Signal
+            $h(t)$ : System (= Transfer Function)
+            $o(t)$ : Output Signal
         
     - Impulse Response / Frequency Response
         - Impulse Response
@@ -131,7 +131,7 @@ comments : true
             - path length regularization
             - output skip connection
         - Replaced input to **Fourier Feature** to facilitate exact Translation&Rotation
-            - $\gamma(\bold{v})=[cos(2\pi\bold{Bv}),sin(2\pi\bold{Bv})]^{\rm{T}}$
+            - $\gamma(\textbg{v})=[cos(2\pi\textbf{Bv}),sin(2\pi\textbf{Bv})]^{\rm{T}}$
                 
                 *[(ref) M. Tancik, et al. Fourier features let networks learn high frequency functions in low dimensional domains, NIPS, 2020](https://bmild.github.io/fourfeat/)
                 
@@ -147,15 +147,15 @@ comments : true
             - It's impractical!
             - Storing slightly larger than the unit square is practically enough!
                 - Chose 10-pixel margin
-        - For a discrete operation $\bold F$
-            - Corresponding continuous operation $\bold f$ exists
+        - For a discrete operation $\textbf{F}$
+            - Corresponding continuous operation $\textbf{f}$ exists
                 
-                s.t. $\bold f(z) = \phi_{s'} \ast \bold F(\Pi_{s} \odot z) \; \longleftrightarrow \; \bold F(Z) = \Pi_{s'} \odot \bold f(\phi_{s} \ast Z)$
+                s.t. $\textbf{f}(z) = \phi_{s'} \ast \textbf{F}(\Pi_{s} \odot z) \; \longleftrightarrow \; \textbf{F}(Z) = \Pi_{s'} \odot \textbf{f}(\phi_{s} \ast Z)$
                 
-                - In the latter case, $\bold f$ must be bandlimitted to $s'/2$
+                - In the latter case, $\textbf{f}$ must be bandlimitted to $s'/2$
 - **Anti-Aliasing Processing**
     - Equivariance
-        - if, $\bold f \circ \bold t = \bold t \circ \bold f$ → $\bold f, \bold t$ are equivariant
+        - if, $\textbf{f} \circ \\textbf{t} = \textbf{t} \circ \textbf{f}$ → $\textbf{f}, \textbf{t}$ are equivariant
         - Successful Anti-Aliasing → Sub-pixel Equivariance to **Translation**, **Rotation** for all layers
     - Per-layer operations
         
@@ -164,39 +164,39 @@ comments : true
         → They are preferable to satisfy **Bandlimit, Equivariance to Translation and Rotation**
         
         - **Convolution**
-            - $\bold F_{conv}(Z) = K*Z$
+            - $\textbf{F}_{conv}(Z) = K*Z$
                 
-                $\longleftrightarrow \; \bold f_{conv}(z) = \phi_{s} * (K*(\Pi_{s} \odot z)) = K * (\phi_{s} * (\Pi_{s} \odot z)) = K*z$
+                $\longleftrightarrow \; \textbf{f}_{conv}(z) = \phi_{s} * (K*(\Pi_{s} \odot z)) = K * (\phi_{s} * (\Pi_{s} \odot z)) = K*z$
                 
                 *Convolution($*$) is commutative
                 
             - **To Check**
                 - Bandlimit → introduce no new freq. (Same!) → OK
-                - Equivariance to Translation of $\bold f$ → trivially fulfilled! → OK
-                - Equivariance to Rotation of $\bold f$ → $K$ should be radially symmetric (e.g. 1x1 conv)
+                - Equivariance to Translation of $\textbf{f}$ → trivially fulfilled! → OK
+                - Equivariance to Rotation of $\textbf{f}$ → $K$ should be radially symmetric (e.g. 1x1 conv)
         - **Upsampling&Downsampling**
             - Upsampling
-                - $\bold f_{up}(z)=z$
+                - $\textbf{f}_{up}(z)=z$
                     
-                    $\longleftrightarrow \; \bold F_{up}(Z)=\Pi_{s'}\odot (\phi_{s}*Z)$
+                    $\longleftrightarrow \; \textbf{F}_{up}(Z)=\Pi_{s'}\odot (\phi_{s}*Z)$
                     
                 - Ideal upsampling doesn't change anything in the $z$
                 - Replaced bilinear upsampling module in the model to LPF (windowed sinc function (not jinc.. why..?))
             - Downsampling
-                - $\bold f_{down}(z) = \psi_{s'}*z$
+                - $\textbf{f}_{down}(z) = \psi_{s'}*z$
                     
-                    $\longleftrightarrow \; \bold F_{down}(Z)=\Pi_{s'}\odot (\psi_{s'}*(\phi_{s}*Z))=(s'/s)^2\cdot \Pi_{s'}\odot (\phi_{s'}*Z)$
+                    $\longleftrightarrow \; \textbf{F}_{down}(Z)=\Pi_{s'}\odot (\psi_{s'}*(\phi_{s}*Z))=(s'/s)^2\cdot \Pi_{s'}\odot (\phi_{s'}*Z)$
                     
                        *$\psi_{s}=s^2\cdot \phi_{s}$ (normalized $\phi_{s}$ to unit mass)
                     
                 - **To Check**
                     - Bandlimit → Need LPF to $s'/2$ before discretization
-                    - Equivariance to Translation of $\bold f$ → trivially fulfilled! → OK
-                    - Equivariance to Rotation of $\bold f$ → $\phi_{s'}$ should be radially symmetric (e.g. **jinc function**)
+                    - Equivariance to Translation of $\textbf{f}$ → trivially fulfilled! → OK
+                    - Equivariance to Rotation of $\textbf{f}$ → $\phi_{s'}$ should be radially symmetric (e.g. **jinc function**)
         - **Nonlinearity (e.g. ReLU)**
             - $\bold f_{\sigma}(z)=\psi_{s}*\sigma(z)=s^2\cdot\phi_{s}*\sigma(z)$
                 
-                $\longleftrightarrow \bold F_{\sigma}(Z)=s^2\cdot \Pi_{s}\odot(\phi_{s}*\sigma(\phi_{s}*Z))$
+                $\longleftrightarrow \textbf{F}_{\sigma}(Z)=s^2\cdot \Pi_{s}\odot(\phi_{s}*\sigma(\phi_{s}*Z))$
                 
             - **To Check**
                 - Bandlimit → **Need LPF whose bandlimit of $s/2$ before discretization (Nonlinearity introduces offending high-frequency contents)**
