@@ -11,7 +11,7 @@ date: 2021-10-13T16:44:00-00:00
 comments : true
 ---
 
-5
+6
 
 
 # Alias Free GAN (Technical Details)
@@ -100,12 +100,7 @@ comments : true
     - System
         
         $O(f)=H(f)I(f) \leftrightarrow o(t)=h(t) \ast i(t)$  
-        
-        $i(t)$ : Input Signal
-        
-        $h(t)$ : System (= Transfer Function)
-        
-        $o(t)$ : Output Signal
+        ($i(t)$ : Input Signal / $h(t)$ : System (= Transfer Function) / $o(t)$ : Output Signal)
         
     - Impulse Response / Frequency Response
         - Impulse Response
@@ -168,8 +163,7 @@ comments : true
         → They are preferable to satisfy **Bandlimit, Equivariance to Translation and Rotation**
         
         - **Convolution**
-            - $\textbf{F}_{conv}(Z) = K \ast Z$
-                
+            - $\textbf{F}_{conv}(Z) = K \ast Z$  
                 $\longleftrightarrow \; \textbf{f}_{conv}(z) = \phi_{s} * (K*(\Pi_{s} \odot z)) = K * (\phi_{s} * (\Pi_{s} \odot z)) = K \ast z$
                 
                 *Convolution($\ast$) is commutative
@@ -181,43 +175,39 @@ comments : true
         - **Upsampling&Downsampling**
             - Upsampling
                 - $\textbf{f}_{up}(z)=z$
-                    
                     $\longleftrightarrow \; \textbf{F}_{up}(Z)=\Pi_{s'}\odot (\phi_{s}*Z)$
                     
                 - Ideal upsampling doesn't change anything in the $z$
                 - Replaced bilinear upsampling module in the model to LPF (windowed sinc function (not jinc.. why..?))
             - Downsampling
                 - $\textbf{f}_{down}(z) = \psi_{s'}*z$
-                    
                     $\longleftrightarrow \; \textbf{F}_{down}(Z)=\Pi_{s'}\odot (\psi_{s'}*(\phi_{s}*Z))=(s'/s)^2\cdot \Pi_{s'}\odot (\phi_{s'}*Z)$
                     
-                       *$\psi_{s}=s^2\cdot \phi_{s}$ (normalized $\phi_{s}$ to unit mass)
+                    ($\psi_{s}=s^2\cdot \phi_{s}$ (normalized $\phi_{s}$ to unit mass))
                     
                 - **To Check**
                     - Bandlimit → Need LPF to $s'/2$ before discretization
                     - Equivariance to Translation of $\textbf{f}$ → trivially fulfilled! → OK
                     - Equivariance to Rotation of $\textbf{f}$ → $\phi_{s'}$ should be radially symmetric (e.g. **jinc function**)
-        - **Nonlinearity (e.g. ReLU)**
-            - $\bold f_{\sigma}(z)=\psi_{s}*\sigma(z)=s^2\cdot\phi_{s}*\sigma(z)$
-                
+        - **Nonlinearity (e.g. ReLU)**        
+            - $\textbf{f}_{\sigma}(z)=\psi_{s}*\sigma(z)=s^2\cdot\phi_{s}*\sigma(z)$
                 $\longleftrightarrow \textbf{F}_{\sigma}(Z)=s^2\cdot \Pi_{s}\odot(\phi_{s}*\sigma(\phi_{s}*Z))$
                 
             - **To Check**
                 - Bandlimit → **Need LPF whose bandlimit of $s/2$ before discretization (Nonlinearity introduces offending high-frequency contents)**
                 - Equivariance
                     
-                    $\bold{F}_{\sigma}(Z)$ contains operations in continuous domain
+                    $\textbf{F}_{\sigma}(Z)$ contains operations in continuous domain
                     
                     → pseudo-continuous representation is needed!
                     
-                       e.g. Upsampling → Nonlinearity → Downsampling
-                    
-                       (2x Upsampling was sufficient)
+                    e.g. Upsampling → Nonlinearity → Downsampling
+                    (2x Upsampling was sufficient)
                     
                     → It's inefficient in CUDA → Implemented custom CUDA kernel (10x faster)
                     
-                    - Equivariance to Translation of $\bold f$ → trivially fulfilled! → OK
-                    - Equivariance to Rotation of $\bold f$ → $\phi_{s}$ for downsampling should be radially symmetric (e.g. **jinc function**)
+                    - Equivariance to Translation of $\textbf{f}$ → trivially fulfilled! → OK
+                    - Equivariance to Rotation of $\textbf{f}$ → $\phi_{s}$ for downsampling should be radially symmetric (e.g. **jinc function**)
 - **LPF**
     - **Ideal LPF : impractical**
         
@@ -228,11 +218,10 @@ comments : true
         - Ringing Artifacts
     - **Kaiser Filter : practical LPF (FIR)**
         
-        (1D) $h_K(x) = 2f_c \cdot sinc(2f_cx) \cdot w_K(x)$
-        
+        (1D) $h_K(x) = 2f_c \cdot sinc(2f_cx) \cdot w_K(x)$        
         (2D) $h_K^{\circ}(\bold{x})=(2f_{c})^2\cdot jinc(2f_c||\bold{x}||)\cdot w_K(x_0)\cdot w_K(x_1)$
         
-           *$w_K(x)$: window function
+        $w_K(x)$: window function
         
         - Should lower the cutoff freq. (It's non-ideal!)
             - $f_c=s/2-f_h$
@@ -264,14 +253,14 @@ comments : true
     
 - Equivariance
     
-    ~ $PSNR(\bold{t}[\bold{G}(z_0;\bold{w})], \bold{G}(\bold{t}[z_0];\bold{w}))$
+    ~ $PSNR(\bold{t}[\textbf{G}(z_0;\textbf{w})], \textbf{G}(\textbf{t}[z_0];\textbf{w}))$
     
        *Expectation was calculated with 50,000 of random sample points
     
     - EQ-T
-        - $\bold{t}$ → Translation
+        - $\textbf{t}$ → Translation
     - EQ-R
-        - $\bold{t}$ → Rotation
+        - $\textbf{t}$ → Rotation
 - FID (Frechet Inception Distance)
 
 ### **[4] Result**
