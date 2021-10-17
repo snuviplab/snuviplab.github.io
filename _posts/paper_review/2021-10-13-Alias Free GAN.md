@@ -11,7 +11,7 @@ date: 2021-10-13T16:44:00-00:00
 comments : true
 ---
 
-6
+7
 
 
 # Alias Free GAN (Technical Details)
@@ -163,8 +163,8 @@ comments : true
         → They are preferable to satisfy **Bandlimit, Equivariance to Translation and Rotation**
         
         - **Convolution**
-            - $\textbf{F}_{conv}(Z) = K \ast Z$  
-                $\longleftrightarrow \; \textbf{f}_{conv}(z) = \phi_{s} * (K*(\Pi_{s} \odot z)) = K * (\phi_{s} * (\Pi_{s} \odot z)) = K \ast z$
+            - $\textbf{F}\_{conv}(Z) = K \ast Z$  
+                $\longleftrightarrow \; \textbf{f}\_{conv}(z) = \phi_{s} * (K*(\Pi_{s} \odot z)) = K * (\phi_{s} * (\Pi_{s} \odot z)) = K \ast z$
                 
                 *Convolution($\ast$) is commutative
                 
@@ -174,14 +174,14 @@ comments : true
                 - Equivariance to Rotation of $\textbf{f}$ → $K$ should be radially symmetric (e.g. 1x1 conv)
         - **Upsampling&Downsampling**
             - Upsampling
-                - $\textbf{f}_{up}(z)=z$
-                    $\longleftrightarrow \; \textbf{F}_{up}(Z)=\Pi_{s'}\odot (\phi_{s}*Z)$
+                - $\textbf{f}\_{up}(z)=z$
+                    $\longleftrightarrow \; \textbf{F}\_{up}(Z)=\Pi_{s'}\odot (\phi_{s}*Z)$
                     
                 - Ideal upsampling doesn't change anything in the $z$
                 - Replaced bilinear upsampling module in the model to LPF (windowed sinc function (not jinc.. why..?))
             - Downsampling
-                - $\textbf{f}_{down}(z) = \psi_{s'}*z$
-                    $\longleftrightarrow \; \textbf{F}_{down}(Z)=\Pi_{s'}\odot (\psi_{s'}*(\phi_{s}*Z))=(s'/s)^2\cdot \Pi_{s'}\odot (\phi_{s'}*Z)$
+                - $\textbf{f}\_{down}(z) = \psi_{s'} \ast z$
+                    $\longleftrightarrow \; \textbf{F}\_{down}(Z)=\Pi_{s'}\odot (\psi_{s'} \ast (\phi_{s} \ast Z))=(s'/s)^2\cdot \Pi_{s'}\odot (\phi_{s'} \ast Z)$
                     
                     ($\psi_{s}=s^2\cdot \phi_{s}$ (normalized $\phi_{s}$ to unit mass))
                     
@@ -190,14 +190,14 @@ comments : true
                     - Equivariance to Translation of $\textbf{f}$ → trivially fulfilled! → OK
                     - Equivariance to Rotation of $\textbf{f}$ → $\phi_{s'}$ should be radially symmetric (e.g. **jinc function**)
         - **Nonlinearity (e.g. ReLU)**        
-            - $\textbf{f}_{\sigma}(z)=\psi_{s}*\sigma(z)=s^2\cdot\phi_{s}*\sigma(z)$
-                $\longleftrightarrow \textbf{F}_{\sigma}(Z)=s^2\cdot \Pi_{s}\odot(\phi_{s}*\sigma(\phi_{s}*Z))$
+            - $\textbf{f}\_{\sigma}(z)=\psi_{s} \ast \sigma(z)=s^2\cdot\phi_{s} \ast \sigma(z)$
+                $\longleftrightarrow \textbf{F}\_{\sigma}(Z)=s^2\cdot \Pi_{s}\odot(\phi_{s} \ast \sigma(\phi_{s} \ast Z))$
                 
             - **To Check**
                 - Bandlimit → **Need LPF whose bandlimit of $s/2$ before discretization (Nonlinearity introduces offending high-frequency contents)**
                 - Equivariance
                     
-                    $\textbf{F}_{\sigma}(Z)$ contains operations in continuous domain
+                    $\textbf{F}\_{\sigma}(Z)$ contains operations in continuous domain
                     
                     → pseudo-continuous representation is needed!
                     
