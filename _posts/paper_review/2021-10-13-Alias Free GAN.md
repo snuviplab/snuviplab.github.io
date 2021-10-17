@@ -11,7 +11,6 @@ date: 2021-10-13T16:44:00-00:00
 comments : true
 ---
 
-7
 
 
 # Alias Free GAN (Technical Details)
@@ -219,7 +218,8 @@ comments : true
     - **Kaiser Filter : practical LPF (FIR)**
         
         (1D) $h_K(x) = 2f_c \cdot sinc(2f_cx) \cdot w_K(x)$        
-        (2D) $h_K^{\circ}(\bold{x})=(2f_{c})^2\cdot jinc(2f_c||\bold{x}||)\cdot w_K(x_0)\cdot w_K(x_1)$
+        
+        (2D) $h_K^{\circ}(\textbf{x})=(2f_{c})^2\cdot jinc(2f_c||\textbf{x}||)\cdot w_K(x_0)\cdot w_K(x_1)$
         
         $w_K(x)$: window function
         
@@ -253,7 +253,7 @@ comments : true
     
 - Equivariance
     
-    ~ $PSNR(\bold{t}[\textbf{G}(z_0;\textbf{w})], \textbf{G}(\textbf{t}[z_0];\textbf{w}))$
+    ~ $PSNR(\textbf{t}[\textbf{G}(z_0;\textbf{w})], \textbf{G}(\textbf{t}[z_0];\textbf{w}))$
     
        *Expectation was calculated with 50,000 of random sample points
     
