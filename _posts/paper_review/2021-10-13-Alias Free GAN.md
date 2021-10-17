@@ -11,6 +11,8 @@ date: 2021-10-13T16:44:00-00:00
 comments : true
 ---
 
+5
+
 
 # Alias Free GAN (Technical Details)
 
@@ -59,7 +61,7 @@ comments : true
         - **Sinc Function** (time) $\stackrel{\mathrm{FT}}{\longleftrightarrow}$ **LPF** (freq)
         - **Convolution($\ast$)** $\stackrel{\mathrm{FT}}{\longleftrightarrow}$ **Multiplication($\cdot$)**
 - **Low Pass Filtering (LPF)**
-    - **Sinc Function** (time)  **$\xleftrightarrow{FT}$ LPF** (freq)
+    - **Sinc Function** (time)  **$\stackrel{\mathrm{FT}}{\longleftrightarrow}$ LPF** (freq)
         
         ![Untitled 2](https://user-images.githubusercontent.com/92419821/137087782-0911ec3e-9e7d-49c8-a0d6-77e6a6c11d54.png)
         
@@ -75,7 +77,7 @@ comments : true
         
         ❗if, **$f_s \geq 2f_m$  →  Original signal could be fully recovered!**
         
-           $\cdot$ $f_s$ : Sampling ratio / $f_m$: Original signal frequency
+            $\cdot$ $f_s$ : Sampling ratio / $f_m$: Original signal frequency
         
         ![Untitled 4](https://user-images.githubusercontent.com/92419821/137087785-dadacd94-2723-49dc-b20a-caa2f4504d33.png)
         
@@ -85,8 +87,7 @@ comments : true
         
         *(Mathematically)*
         
-        - $s_c(nT_s) = s_d[n]$
-            
+        - $s_c(nT_s) = s_d[n]$           
             $S_d(f) = \frac{1}{T_s}\sum\limits_{n=-\infty}^{+\infty}{S_c((f-n)/T_s)}$
             
             Let's say, $S_c(f)=0$ for all $|f| \geq f_m$  
@@ -99,8 +100,8 @@ comments : true
     - System
         
         $O(f)=H(f)I(f) \leftrightarrow o(t)=h(t) \ast i(t)$
-        
-          * $i(t)$ : Input Signal
+         
+            $i(t)$ : Input Signal
             $h(t)$ : System (= Transfer Function)
             $o(t)$ : Output Signal
         
@@ -165,7 +166,7 @@ comments : true
         → They are preferable to satisfy **Bandlimit, Equivariance to Translation and Rotation**
         
         - **Convolution**
-            - $\textbf{F}{conv}(Z) = K \ast Z$
+            - $\textbf{F}_{conv}(Z) = K \ast Z$
                 
                 $\longleftrightarrow \; \textbf{f}_{conv}(z) = \phi_{s} * (K*(\Pi_{s} \odot z)) = K * (\phi_{s} * (\Pi_{s} \odot z)) = K \ast z$
                 
