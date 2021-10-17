@@ -77,7 +77,7 @@ comments : true
         
         ❗if, **$f_s \geq 2f_m$  →  Original signal could be fully recovered!**
         
-            $\cdot$ $f_s$ : Sampling ratio / $f_m$: Original signal frequency
+            - ($f_s$ : Sampling ratio / $f_m$: Original signal frequency)
         
         ![Untitled 4](https://user-images.githubusercontent.com/92419821/137087785-dadacd94-2723-49dc-b20a-caa2f4504d33.png)
         
