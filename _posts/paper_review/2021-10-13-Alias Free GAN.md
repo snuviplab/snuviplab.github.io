@@ -52,13 +52,14 @@ comments : true
         
     
        ⇒ $s(t)=\sum\limits_i{A_ie^{j2 \pi f_it}} \; \leftrightarrow \; S(f)=\sum\limits_{i}{A_i\delta(f-f_i)}$
+       
        *Representation becomes much more simpler!
     
     - Property
-        - **Sinc Function** (time) $\leftrightarrow{FT}$ **LPF** (freq)
-        - **Convolution($\ast$)** $\leftrightarrow{FT}$ **Multiplication($\cdot$)**
+        - **Sinc Function** (time) $\xleftrightarrow{FT}$ **LPF** (freq)
+        - **Convolution($\ast$)** $\xleftrightarrow{FT}$ **Multiplication($\cdot$)**
 - **Low Pass Filtering (LPF)**
-    - **Sinc Function** (time)  **$\leftrightarrow{FT}$ LPF** (freq)
+    - **Sinc Function** (time)  **$\xleftrightarrow{FT}$ LPF** (freq)
         
         ![Untitled 2](https://user-images.githubusercontent.com/92419821/137087782-0911ec3e-9e7d-49c8-a0d6-77e6a6c11d54.png)
         
@@ -89,7 +90,7 @@ comments : true
             $S_d(f) = \frac{1}{T_s}\sum\limits_{n=-\infty}^{+\infty}{S_c((f-n)/T_s)}$
             
             Let's say, $S_c(f)=0$ for all $|f| \geq f_m$  
-            If, $f_s\leq 2f_m$, Then, $S_c((f-n)/T_s)$ would be overlapped among different $n \:$s
+            If, $f_s\leq 2f_m$, Then, $S_c((f-n)/T_s)$ would be overlapped among different $n$s
             Which means original signal is harmed by sampling
             
             ![Untitled 5](https://user-images.githubusercontent.com/92419821/137087786-e225b6f4-bd00-482f-8f64-4e3493af50c6.png)
@@ -131,7 +132,7 @@ comments : true
             - path length regularization
             - output skip connection
         - Replaced input to **Fourier Feature** to facilitate exact Translation&Rotation
-            - $\gamma(\textbg{v})=[cos(2\pi\textbf{Bv}),sin(2\pi\textbf{Bv})]^{\rm{T}}$
+            - $\gamma(\textbf{v})=[cos(2\pi\textbf{Bv}),sin(2\pi\textbf{Bv})]^{\rm{T}}$
                 
                 *[(ref) M. Tancik, et al. Fourier features let networks learn high frequency functions in low dimensional domains, NIPS, 2020](https://bmild.github.io/fourfeat/)
                 
@@ -164,11 +165,11 @@ comments : true
         → They are preferable to satisfy **Bandlimit, Equivariance to Translation and Rotation**
         
         - **Convolution**
-            - $\textbf{F}_{conv}(Z) = K*Z$
+            - $\textbf{F}{conv}(Z) = K \ast Z$
                 
-                $\longleftrightarrow \; \textbf{f}_{conv}(z) = \phi_{s} * (K*(\Pi_{s} \odot z)) = K * (\phi_{s} * (\Pi_{s} \odot z)) = K*z$
+                $\longleftrightarrow \; \textbf{f}_{conv}(z) = \phi_{s} * (K*(\Pi_{s} \odot z)) = K * (\phi_{s} * (\Pi_{s} \odot z)) = K \ast z$
                 
-                *Convolution($*$) is commutative
+                *Convolution($\ast$) is commutative
                 
             - **To Check**
                 - Bandlimit → introduce no new freq. (Same!) → OK
