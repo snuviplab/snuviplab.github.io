@@ -11,6 +11,7 @@ date: 2021-10-13T16:44:00-00:00
 comments : true
 ---
 
+$\stackrel{\mathrm{DFT}}{\longleftrightarrow}$
 
 # Alias Free GAN (Technical Details)
 
@@ -40,15 +41,15 @@ comments : true
         
         *(Fourier Transform)*
         
-        (Time → Freq) $S(f) = \int_{-\infty}^{+\infty}{s(t)*e^{-j 2\pi ft}dt}$
+        (Time → Freq) $S(f) = \int_{-\infty}^{+\infty}{s(t)e^{-j 2\pi ft}dt}$
         
-        (Freq → Time) $s(t) = \int_{-\infty}^{+\infty}{S(f)*e^{j 2\pi ft}df}$
+        (Freq → Time) $s(t) = \int_{-\infty}^{+\infty}{S(f)e^{j 2\pi ft}df}$
         
         *(Discrete Time Fourier Transform)*
         
-        (Time → Freq) $S(f) = \sum\limits_{n=-\infty}^{+\infty}{s(n)*e^{-j 2\pi fn}}$   *cf. $S(f)=S(f+1)$
+        (Time → Freq) $S(f) = \sum\limits_{n=-\infty}^{+\infty}{s(n)e^{-j 2\pi fn}}$   *cf. $S(f)=S(f+1)$
         
-        (Freq → Time) $s(n) = \int_{-\pi}^{+\pi}{S(f)*e^{j 2\pi fn}df}$
+        (Freq → Time) $s(n) = \int_{-\pi}^{+\pi}{S(f)e^{j 2\pi fn}df}$
         
     
        ⇒ $s(t)=\sum\limits_i{A_ie^{j2 \pi f_it}} \; \leftrightarrow \; S(f)=\sum\limits_{i}{A_i\delta(f-f_i)}$
