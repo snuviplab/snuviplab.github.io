@@ -11,7 +11,6 @@ date: 2021-10-13T16:44:00-00:00
 comments : true
 ---
 
-$\stackrel{\mathrm{DFT}}{\longleftrightarrow}$
 
 # Alias Free GAN (Technical Details)
 
@@ -57,8 +56,8 @@ $\stackrel{\mathrm{DFT}}{\longleftrightarrow}$
        *Representation becomes much more simpler!
     
     - Property
-        - **Sinc Function** (time) $\xleftrightarrow{FT}$ **LPF** (freq)
-        - **Convolution($\ast$)** $\xleftrightarrow{FT}$ **Multiplication($\cdot$)**
+        - **Sinc Function** (time) $\stackrel{\mathrm{FT}}{\longleftrightarrow}$ **LPF** (freq)
+        - **Convolution($\ast$)** $\stackrel{\mathrm{FT}}{\longleftrightarrow}$ **Multiplication($\cdot$)**
 - **Low Pass Filtering (LPF)**
     - **Sinc Function** (time)  **$\xleftrightarrow{FT}$ LPF** (freq)
         
@@ -76,7 +75,7 @@ $\stackrel{\mathrm{DFT}}{\longleftrightarrow}$
         
         ❗if, **$f_s \geq 2f_m$  →  Original signal could be fully recovered!**
         
-           * $f_s$ : Sampling ratio / $f_m$: Original signal frequency
+           $\cdot$ $f_s$ : Sampling ratio / $f_m$: Original signal frequency
         
         ![Untitled 4](https://user-images.githubusercontent.com/92419821/137087785-dadacd94-2723-49dc-b20a-caa2f4504d33.png)
         
