@@ -218,7 +218,6 @@ comments : true
     - **Kaiser Filter : practical LPF (FIR)**
         
         (1D) $h_K(x) = 2f_c \cdot sinc(2f_cx) \cdot w_K(x)$        
-        
         (2D) $h_K^{\circ}(\textbf{x})=(2f_{c})^2\cdot jinc(2f_c||\textbf{x}||)\cdot w_K(x_0)\cdot w_K(x_1)$
         
         $w_K(x)$: window function
