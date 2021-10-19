@@ -1,0 +1,144 @@
+---
+layout: post
+title: Non-local Neural Networks
+modified:
+categories: paper_review
+tags: [Non-local, Videos, Building Blocks] 
+image:
+  feature:
+date: 2021-10-19T23:23:00-00:00 
+comments : true
+---
+# Non-local Neural Networks
+
+15 July 2021
+
+## Non-local Neural Networks (CVPR, 2018)
+
+### long-distance dependencies
+
+modeled by large receptive fields formed by deep stacks of convolutional operations
+
+### local operations (convolutional, recurrent operations)
+
+- computationally inefficient
+- optimization difficulties
+- difficult multi-hop dependency modeling
+
+→ Non-local operations to capture long-range dependencies
+
+: RNN/CNN 모델 자체에 내재되어 있는 한계점 존재
+
+## Non-local operation
+
+- classical non-local mean operation in CV
+
+: weighted sum of features at **all positions** in the input feature maps
+
+![Untitled0](https://user-images.githubusercontent.com/46922219/137930489-9a59fe71-4778-4125-b582-eb4070b7ac1c.png)
+
+position $X_i$ 의 response 값을 계산할 때 모든 position $X_j$의 weighted average로 계산
+
+- weight는 픽셀 간의 similarity로 계산, ex) euclidian distance of gray level vectors
+
+(위 사진에서는 값이 큰 포지션만 보여짐, 이런 방식으로 frame 1과 frame 3, 4의 축구공 간의 관계가 강조됨)
+
+- 노이즈 제거에 있어서 주변 영역만이 아니라 이미지 전체에서 유사한 부분을 찾아서 활용하는 방식
+
+position: can be in space, time, or spacetime → applicable for image, sequence, video problems
+
+### advantages
+
+- can capture long-range dependencies directly by computing interactions between any two positions
+- efficient only with a few layers
+- maintain the variable size → can be easily combined with other operations (ex. convolutions)
+    
+    : used as a generic family of building blocks for capturing long-range dependencies
+    
+    ![Untitled 1](https://user-images.githubusercontent.com/46922219/137930468-fc175273-a3b1-4b23-800b-ec87d2647293.png)
+    
+
+- self-attention can be viewed as a form of the non-local mean
+
+## Methodology
+
+$$y_i = \frac{1}{C(x)}\sum_{\forall j}f(x_i, x_j)g(x_j)$$
+
+- $g(x_j)=W_gx_j$: linear embedding with a learned weight matrix
+- $f(x_i, x_j)$
+    - Gaussian: $f(x_i, x_j)=e^{x_i^Tx_j}$
+    - Embedded Gaussian: $f(x_i, x_j)=e^{\theta(x_i)^T\phi(x_j)}$
+    - Dot product: $f(x_i, x_j)=\theta(x_i)^T\phi(x_j)$
+    - Concatenation: $f(x_i, x_j)=ReLU(w_f^T[\theta(x_i), \phi(x_j)])$
+
+- Non-local block
+
+$$z_i = W_zy_i+x_i$$
+
+residual connection $x_i$: can insert non-local block to any pre-trained model without breaking initial behavior
+
+![Untitled 2](https://user-images.githubusercontent.com/46922219/137930477-aea4aa18-12b6-489c-a3f3-40361f32a1c7.png)
+
+ ㄴ residual block of embedded gaussian $f(x_i, x_j)$
+
+## Experiments
+
+### models
+
+baseline 1) C2D (2D ConvNet baseline)
+
+- ResNet-50 backbone
+- 2D kernels, temporal dimension addressed only by pooling
+
+baseline 2) I3D (Inflated 3D ConvNet)
+
+- inflate 2D k*k kernels as 3D t*k*k kernel that spans t frames
+
+→ add 1, 5, or 10 non-local blocks to each baselines for non-local networks
+
+### datasets
+
+Kinetics
+
+- 246K training, 20K validation, 400 human action categories
+
+### results
+
+![Untitled 3](https://user-images.githubusercontent.com/46922219/137930480-9f6313c4-b3ca-4889-9ec8-04d2a3d240a4.png)
+
+- ablation studies
+
+![Untitled 4](https://user-images.githubusercontent.com/46922219/137930484-e763d75d-7c77-42de-b70a-3ea6b9359ab8.png)
+
+1. **aggregation 방식**
+    - Embedded Gaussian / Dot-product / Concatenation이 효과적, 주로 Embedded Gaussian 활용
+2. **non-local block을 추가할 위치**
+    - stage가 뒤에 있을수록 효과적인데, 가장 마지막 stage (res5)에서는 이미 정보 손실이 너무 많이 일어나서 효과가 상대적으로 적다고 추정
+3. **layer의 개수**
+    - NL block을 더 많이 쌓을수록 성능 향상
+4. **시간 vs 공간 vs 시공간**
+    - 시간: 여러 frame의 같은 position에 대해서만 aggregate
+    - 공간: 한 frame 안에서만 aggregate
+    
+    → 시공간 모두를 계산하는 방법이 가장 효과적
+    
+5. **기존 SOTA와의 성능 비교**
+    - NL block을 추가한 버전이 더 효과적
+6. **depth별 성능 비교**
+    - ResNet 기준, 더 깊은 레이어의 ResNet101이 더 효과적
+    
+    → 즉, long-term dependency 문제를 잘 해결했음
+    
+7. **long-distance에의 성능**
+    - 극단적으로 frame의 길이를 더 늘렸을 때도 좋은 성능 보임
+
+## Conclusion
+
+1. 기존 two-stream networks에서처럼 optical flow를 사용하여 motion을 탐지하지 않고, RGB 값만을 활용한 적은 계산량으로도 non-local 정보를 통해 좋은 성능을 달성
+2. Non-local block은 네트워크의 구조가 아니라 building block의 형태이고, 차원을 유지하며 residual을 더해주면서 기존 operation의 작용을 방해하지 않기 때문에 유연하고 독립적으로 레이어의 여러 위치에 추가할 수 있음
+3. 기존의 효율적인 pretrained network의 중간에 추가했을 때 효과적
+
+### References
+
+1. [https://arxiv.org/abs/1711.07971](https://arxiv.org/abs/1711.07971)
+2. [https://chacha95.github.io/2019-07-17-VideoUnderstanding5/](https://chacha95.github.io/2019-07-17-VideoUnderstanding5/)
