@@ -14,7 +14,7 @@ image:
 
 ### More Information
 
-http://viplab.snu.ac.kr/
+[Homepage](http://viplab.snu.ac.kr/)
 
 
 ### Contact me
