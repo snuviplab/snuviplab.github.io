@@ -1,0 +1,242 @@
+---
+layout: post
+title: "PoseAug: A Differentiable Pose Augmentation Framework for 3D Human Pose Estimation (CVPR21', NUS)"
+modified:
+categories: paper_review
+excerpt:
+tags: [Video, Pose, 3D Pose, PoseAug, Augmentation]
+image:
+ feature:
+date: 2021-10-20T12:05:00-00:00
+comments : true
+---
+
+
+
+# PoseAug: A Differentiable Pose Augmentation Framework for 3D Human Pose Estimation (CVPR21', NUS)
+
+## **[0] Summary**
+
+(remark)
+
+- Best Paper Candidates in CVPR21'
+- SOTA in Weakly Supervised Human3.6M
+- Showed significant&consistent performance boost in weakly-supervised setting
+    
+    ![Untitled](https://user-images.githubusercontent.com/92419821/138021749-b0456b7e-33d1-420f-9789-083c80c5bf9a.png)
+    
+
+(methodology)
+
+- Proposed **learnable data augmentation** on 3D Human Pose task
+- Trained pose augmentor from the error of pose estimator
+    - Help it generate diverse and realistic augmentation
+- Introduced part-aware 3D discriminator
+
+![Untitled 1](https://user-images.githubusercontent.com/92419821/138021722-df6307cf-e3ae-42e7-ac08-c95e8a897666.png)
+
+## [1] Intro - Problem Def.
+
+**(Prob.)**
+
+- Existing **3D human pose estimators** → **poor generalization** performance to new datasets
+    - Why? → Limited diversity of 2D-3D pose pairs
+- Previous augmentation → offline manner + no consideration on model training
+    - Prone to generate too easy augmentation for model
+    - Used pre-defined rules which limits diversity
+
+**(Sol.)**
+
+- We should increase the diversity of augmentation!
+    1. **Utilizing the estimation error** of pose estimator in an **online manner**
+        - To generate more diverse and harder poses
+    2. By using **differentiable augmentations** (e.g. adjust posture, bodysize, view point, position)
+        - Not by deterministic augmentations which are not learnable (= couldn't be improved through training)
+    3. With **part-aware discriminator**
+        - Not with the previous original discriminator considering whole body
+
+## [2] Method
+
+(Preliminaries)
+
+- Conventional Pose Estimator Training
+    
+    ![Untitled 2](https://user-images.githubusercontent.com/92419821/138021726-f0657749-8804-40b5-ba90-cbecae23393e.png)
+    
+    - $\chi = \{x,X\}$ := 2D-3D pose pair
+    - $P_\theta$ := Pose Estimator ($\theta$ : parameter)
+    - $L_P=||\textbf{X}-\tilde{\textbf{X}}||_2^2$  ($\tilde{\textbf{X}}$ : predicted pose)
+- PoseAug Training
+    
+    ![Untitled 3](https://user-images.githubusercontent.com/92419821/138021728-9fcc9c20-b47c-4906-9e55-5e7353115d17.png)
+    
+    - $A_{\theta_A}$ := Pose Augmentor ($\theta_A$ : parameter)
+        - Objective: To increase the loss
+            - Pose Discriminator is needed to prevent it from generating implausible poses
+- Structure : 3 parts
+    - Pose Augmentor
+    - Pose Discriminator
+    - Pose Estimator
+    
+    → They interact with each others
+    
+- End-to-End training strategy
+    - Update each part alternatively
+    - Firstly train the pose estimator for stable training
+
+### (1) Pose Augmentor
+
+**(Process)**
+
+- **(1st step)** given 3D pose $\textbf{X} \in \mathbb{R}^{3 \times J} \ \rightarrow$ bone vector $\textbf{B} \in \mathbb{R}^{3 \times (J-1)}$
+    - i.e. $\textbf{B}=H(\textbf{X})$
+        
+        A bone $b_k=p_r-p_t=\textbf{X}c$
+        
+        where, $p_r,\ p_t$ are joints
+        
+        $c=(0,...,0,1,0,...0,-1,0,...0)^T$
+        
+        And, $\textbf{B}=(b_1,b_2,...,b_{j-1})=\textbf{XC}$
+        
+    
+    Here, $\textbf{B}=||\textbf{B}||\times\hat{\textbf{B}}$ 
+    
+    - $\hat{\textbf{B}} \in \mathbb{R}^{3 \times (J-1)}$ ; Bone Direction vector ~ Joint Angle
+    - $||\textbf{B}|| \in \mathbb{B}^{1 \times (J-1)}$ ; Bone Length vector ~ Body Size
+- **(2nd step)** Apply MLP to $\textbf{X}$ for feature extraction
+    - Gaussian Noise is concatenated to $\textbf{X}$ for further randomness
+- **(3rd step)** Regress augmentation parameters $\gamma_{ba},\ \gamma_{bl},\ (R,t)$ from extracted feature
+    - $\gamma_{ba} \in \mathbb{R}^{3\times(J-1)}$ ~ joint angles
+        - $\hat{\textbf{B}^{'}}=\hat{\textbf{B}}+\gamma_{ba}$
+    - $\gamma_{bl}\in\mathbb{R}^{1\times(J-1)}$ ~ body size
+        - $||\textbf{B}^{'}||=||{\textbf{B}}||\times(1+\gamma_{bl})$
+    - $(R,t)\in(\mathbb{R}^{3\times 3},\mathbb{R}^{3\times 1})$ ~ view-point, position
+        - $\textbf{X}^{'}=R[H^{-1}(\textbf{B}^{'})]+t$
+            - $\textbf{B}^{'}=||\textbf{B}^{'}||\times\hat{\textbf{B}^{'}}$
+- **(4th step)** Reproject $\textbf{X}^{'}$ to 2D space
+    - $x^{'}=\Pi(\textbf{X}^{'})$
+        - Perspective projection via the camera parameters from the original data ([*ref](https://www.cambridge.org/core/books/multiple-view-geometry-in-computer-vision/0B6F289C78B2B23F596CAA76D3D43F7A))
+
+→ Finally, we get augmented 2D-3D pair $\{x^{'}, \textbf{X}^{'}\}$
+
+**(Loss)**
+
+![Untitled 4](https://user-images.githubusercontent.com/92419821/138021729-acaa78d6-7c37-4d56-b93b-84e7226aa349.png)
+
+- Feedback Loss $L_{fb}$
+    
+    ![Untitled 5](https://user-images.githubusercontent.com/92419821/138021731-59b43280-908b-4859-b30a-3952bf0f3b42.png)
+    
+    - Make the augmentation stay within proper range w.r.t. $L_P(\textbf{X})$
+    - $\beta\ (>1)$ controls the difficulty level
+        - Increase $\beta$ as training proceeds to generate more challenging data
+- Regularization Loss $L_{reg}$
+    
+    ![Untitled 6](https://user-images.githubusercontent.com/92419821/138021732-b25f696f-4da3-41b1-87cc-8ba55a593de2.png)
+    
+    - Prevent extremely hard cases
+    - $\overline{{\gamma}}=mean(\gamma_{ba},\gamma_{bl})$
+
+### (2) Pose Discriminator
+
+- Lack of priors may induce implausible augmentation (e.g. violating bio-mechanical structure)
+- Used 2 types of discriminator
+    - $D_{3d}$ ~ Joint Angle
+        - Further developed KCS, to **part-aware KCS** only focuses on **local poses →** More diverse poses can be generated!
+            
+            ![Untitled 7](https://user-images.githubusercontent.com/92419821/138021733-b565679b-c2d2-4b20-baeb-26dc5cb70b5a.png)
+            
+            - KCS : A matrix representation of skeletal structural of human
+                - KCS is quite critical for model to comprehend human body (e.g. physical symmetry)
+                    
+                    *ref. [(CVPR19') RepNet](https://arxiv.org/abs/1902.09868)
+                    
+                    ![Untitled 8](https://user-images.githubusercontent.com/92419821/138021735-b843b94a-6312-4664-9cef-baf6a84e70ef.png)
+                    
+            - local poses : torso, left/right arm/leg (total 5 parts)
+    - $D_{2d}$ ~ Body Size, Viewpoint & Position
+
+**(Process)**
+
+($D_{3d}$)
+
+- **(1st step)** Get $\hat{\textbf{B}}$ from $\textbf{X}$ and $\textbf{X}^{'}$
+- **(2nd step)** Separate $\hat{\textbf{B}}$ into 5 parts (torso, left/right arm/leg)
+    - i.e. $\hat{\textbf{B}_i},\ (i=1,\dots,5)$
+- **(3rd step)** Compute $KCS_{local}^i$ matrix
+    - $KCS_{local}^i=\hat{\textbf{B}_i}^T\hat{\textbf{B}_i}$
+        - Each entry of it is an inner product of two bone vectors
+            - Diagonal ~ Length of each bone
+            - Others ~ Angle of bone pair
+- **(4th step)** Input $KCS_{local}^i$ to the $D_{3d}$
+
+($D_{2d}$)
+
+- Input 2D Pose to the $D_{2d}$
+
+**(Loss)**
+
+![Untitled 9](https://user-images.githubusercontent.com/92419821/138021736-3cd55b2f-6ec2-473c-9463-16f3004bcc02.png)
+
+- Adopted LS-GAN loss ([*ref](https://arxiv.org/abs/1611.04076)) for both 3D and 2D spaces
+
+### (3) Pose Estimator
+
+**(Process)**
+
+- Estimate 3D poses from 2D poses
+- **(1st step)** Feature Extraction from 2D Poses
+- **(2nd step)** 3D Poses Regression
+- Used various estimator in the experiment
+
+**(Loss)**
+
+![Untitled 10](https://user-images.githubusercontent.com/92419821/138021737-97d28195-0b8d-4f67-901e-e0ab86c553af.png)
+
+- Train the estimator with both original and augmented pose pairs jointly
+    - Very effective for the model to be robust
+    
+
+## [3] Result
+
+- 4 essential questions
+    - **Q1. Is PoseAug able to improve performance of 3D pose estimator for both intra-dataset and cross-dataset?**
+    - **Q2. Is PoseAug effective at enhancing diversity of training data?**
+    - **Q3. Is PoseAug consistently effective for different pose estimators and cases with limited training data?**
+    - **Q4. How does each component of PoseAug take effect?**
+- **Q1. Is PoseAug able to improve performance of 3D pose estimator for both intra-dataset and cross-dataset?**
+    
+    ![Untitled 11](https://user-images.githubusercontent.com/92419821/138021739-11959a28-1a01-4c1d-acc6-7605452fcc67.png)
+    
+- **Q2. Is PoseAug effective at enhancing diversity of training data?**
+    
+    ![Untitled 12](https://user-images.githubusercontent.com/92419821/138021740-bc895b57-55bb-4ec1-84ca-2bf6474760c7.png)
+    
+    **Distribution of H36M is limited → The reason why the model trained on H36M hardly generalizable to in-the-wild*
+    
+- **Q3. Is PoseAug consistently effective for different pose estimators and cases with limited training data?**
+    
+    ![Untitled 13](https://user-images.githubusercontent.com/92419821/138021741-25f784de-96b8-4972-b272-7582c2ffd92c.png)
+    
+- **Q4. How does each component of PoseAug take effect?**
+    - Augmentation
+        - RT benefits the most
+        
+        ![Untitled 14](https://user-images.githubusercontent.com/92419821/138021743-32f5c0f1-3d90-495d-9c38-b93db323d4ad.png)
+        
+    - Discriminator
+        - $D_{3d}$ benefits better than $D_{2d}$
+            
+            ![Untitled 15](https://user-images.githubusercontent.com/92419821/138021746-42a3910d-249d-4360-87df-c336663ad955.png)
+            
+        - PA-KCS is clearly effective!
+            
+            ![Untitled 16](https://user-images.githubusercontent.com/92419821/138021748-27cffacc-dc57-4b88-bd4d-bf7ccc89e9f2.png)
+            
+
+## [Reference]
+
+[1] [(CVPR21') Kehong Gone, et al. PoseAug: A Differentiable Pose Augmentation Framework for 3D Human Pose Estimation](https://arxiv.org/abs/2105.02465)
+
+[2] [(CVPR19') Bastian Wandt, et al. RepNet: Weakly Supervised Training of an Adversarial Reprojection Network for 3D Human Pose Estimation](https://arxiv.org/abs/1902.09868)
