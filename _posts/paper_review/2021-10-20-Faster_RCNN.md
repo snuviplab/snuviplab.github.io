@@ -25,7 +25,7 @@ comments : true
 
 ## Faster R-CNN architecture
 
-![images/Fast-RCNN/스크린샷_2021-07-27_오후_5.34.38.png](images/Fast-RCNN/스크린샷_2021-07-27_오후_5.34.38.png)
+![images/Fast-RCNN/2021-07-27_5.34.38.png](images/Fast-RCNN/2021-07-27_5.34.38.png)
 
 ### Region Proposal Network(RPN) module
 
@@ -115,7 +115,7 @@ cs231n
     > 공유하는 CNN과 RPN은 고정시킨고,  Fast R-CNN에 해당하는 레이어만 fine tune 시킴
     > 
 
-![/images/Fast-RCNN/스크린샷_2021-08-02_오전_4.04.11.png](/images/Fast-RCNN/스크린샷_2021-08-02_오전_4.04.11.png)
+![/images/Fast-RCNN/2021-08-02_4.04.11.png](/images/Fast-RCNN/2021-08-02_4.04.11.png)
 
 [https://www.youtube.com/watch?v=kcPAGIgBGRs&ab_channel=JinWonLee](https://www.youtube.com/watch?v=kcPAGIgBGRs&ab_channel=JinWonLee)
 
@@ -124,15 +124,15 @@ cs231n
 
 - PASCAL VOC 2007, 2012
     
-    ![/images/Fast-RCNN/스크린샷_2021-07-28_오후_9.46.28.png](/images/Fast-RCNN/스크린샷_2021-07-28_오후_9.46.28.png)
+    ![/images/Fast-RCNN/2021-07-28_9.46.28.png](/images/Fast-RCNN/2021-07-28_9.46.28.png)
     
-    ![/images/Fast-RCNN/스크린샷_2021-07-28_오후_9.46.45.png](/images/Fast-RCNN/스크린샷_2021-07-28_오후_9.46.45.png)
+    ![/images/Fast-RCNN/2021-07-28_9.46.45.png](/images/Fast-RCNN/2021-07-28_9.46.45.png)
     
-    ![/images/Fast-RCNN/스크린샷_2021-08-01_오후_11.11.02.png](/images/Fast-RCNN/스크린샷_2021-08-01_오후_11.11.02.png)
+    ![/images/Fast-RCNN/2021-08-01_11.11.02.png](/images/Fast-RCNN/2021-08-01_11.11.02.png)
     
 - MS COCO
     
-    ![/images/Fast-RCNN/스크린샷_2021-07-28_오후_9.47.26.png](/images/Fast-RCNN/스크린샷_2021-07-28_오후_9.47.26.png)
+    ![/images/Fast-RCNN/2021-07-28_9.47.26.png](/images/Fast-RCNN/2021-07-28_9.47.26.png)
     
 
 ## Conclusion
