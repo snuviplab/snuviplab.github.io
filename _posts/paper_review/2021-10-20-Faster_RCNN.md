@@ -25,7 +25,7 @@ comments : true
 
 ## Faster R-CNN architecture
 
-![/images/Fast-RCNN/스크린샷_2021-07-27_오후_5.34.38.png](/images/Fast-RCNN/스크린샷_2021-07-27_오후_5.34.38.png)
+![images/Fast-RCNN/스크린샷_2021-07-27_오후_5.34.38.png](images/Fast-RCNN/스크린샷_2021-07-27_오후_5.34.38.png)
 
 ### Region Proposal Network(RPN) module
 
