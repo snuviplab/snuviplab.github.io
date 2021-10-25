@@ -13,9 +13,9 @@ Looking for a simple, responsive, theme for your Jekyll powered blog? Well look 
 * [Custom 404 page](http://mmistakes.github.io/so-simple-theme/404.html) to get you started.
 * [Simple site search](https://github.com/christian-fei/Simple-Jekyll-Search)
 * Support for Disqus Comments
-
+<!--
 ![screenshot of So Simple Theme](http://mmistakes.github.io/so-simple-theme/images/so-simple-theme-preview.jpg)
-
+-->
 See a [live version of So Simple](http://mmistakes.github.io/so-simple-theme/) hosted on GitHub.
 
 ---
